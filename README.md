@@ -5,7 +5,7 @@
 ## Install
 
 ``` shell
-pip install git+https://github.com/claytonrothschild/kubi.git
+pip install -U git+https://github.com/claytonrothschild/kubi.git
 ```
 ### Requirements
 - [numpy](https://numpy.org/)
