@@ -14,7 +14,7 @@ from numpy import pi
 
 IsWin = platform.system() == 'Windows'
 
-__version__ = '0.1.4'
+__version__ = '0.1.5-cloudpano'
 
 __author__ = "Keim, Stefan"
 __copyright__ = "Keim, Stefan"
@@ -62,8 +62,14 @@ def kubi(args):
         ### TODO replace numpy with vips
 
         ls, step = np.linspace(-1, 1, size, dtype="f4", endpoint=False, retstep=True)
-        view = ls.reshape(1, size)
-        view += step/2
+  
+        ### DEBUG: Why is there a black line on some images? ###
+        # it appears to be whenever the value is below abs(step)
+        # boolArray = (ls >-step)&(ls < step)
+        # print(ls[boolArray])
+
+        ls[(ls>-step)&(ls<= 0)] = -step
+        ls[(ls<step)&(ls>= 0)] = step
     
         if args.transform == "eac": # C.Brown (2017): Bringing pixels front and center in VR video
             ls = np.tan(ls / (4 / pi))
@@ -77,7 +83,7 @@ def kubi(args):
         x1 = np.arctan2(xv, yv)
         y1 = np.arctan(np.hypot(yv,xv))
 
-        ls = view = xv = yv = None
+        ls = xv = yv = None
 
         piot = pi/2
 
